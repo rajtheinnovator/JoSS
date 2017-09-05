@@ -1,0 +1,143 @@
+{
+  "project_info": {
+    "project_number": "184583154677",
+    "firebase_url": "https://friendlychatagain-a2ce4.firebaseio.com",
+    "project_id": "friendlychatagain-a2ce4",
+    "storage_bucket": "friendlychatagain-a2ce4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184583154677:android:23f34c557039d277",
+        "android_client_info": {
+          "package_name": "com.enpassio.friendlychatagain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "184583154677-vu2gdmhab4276gmnan4pf131s33oj5ve.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enpassio.friendlychatagain",
+            "certificate_hash": "5e25afaac4019511a6b48469d01dce47483e03a6"
+          }
+        },
+        {
+          "client_id": "184583154677-obckdftkeg7fjbt6pq9t835g5prrbads.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDnWZPqBFMsLsNwQ4N0V91y2fsQsEhQXU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "184583154677-obckdftkeg7fjbt6pq9t835g5prrbads.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184583154677:android:ba9f94fdfc26ea4c",
+        "android_client_info": {
+          "package_name": "com.enpassio.linoo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "184583154677-rc8oipa7rn7ink53asqg9u70na0m4lpm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enpassio.linoo",
+            "certificate_hash": "5e25afaac4019511a6b48469d01dce47483e03a6"
+          }
+        },
+        {
+          "client_id": "184583154677-obckdftkeg7fjbt6pq9t835g5prrbads.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDnWZPqBFMsLsNwQ4N0V91y2fsQsEhQXU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "184583154677-obckdftkeg7fjbt6pq9t835g5prrbads.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184583154677:android:ccb2f85f12d3d269",
+        "android_client_info": {
+          "package_name": "com.enpassio.joss"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "184583154677-1s8llme7p213kckvd1aln4mgvst9bc6s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enpassio.joss",
+            "certificate_hash": "5e25afaac4019511a6b48469d01dce47483e03a6"
+          }
+        },
+        {
+          "client_id": "184583154677-obckdftkeg7fjbt6pq9t835g5prrbads.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDnWZPqBFMsLsNwQ4N0V91y2fsQsEhQXU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "184583154677-obckdftkeg7fjbt6pq9t835g5prrbads.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
