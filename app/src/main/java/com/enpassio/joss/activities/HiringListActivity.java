@@ -5,12 +5,11 @@ import android.os.Bundle;
 
 import com.enpassio.joss.R;
 
-public class LoginActivity extends AppCompatActivity {
+public class HiringListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
-
+        setContentView(R.layout.activity_hiring_list);
     }
 }

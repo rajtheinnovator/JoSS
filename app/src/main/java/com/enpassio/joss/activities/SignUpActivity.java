@@ -5,11 +5,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.enpassio.joss.R;
+import com.enpassio.joss.models.UserProfile;
 import com.enpassio.joss.utils.InternetConnectivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,21 +49,33 @@ public class SignUpActivity extends AppCompatActivity {
     @BindView(R.id.button_already_registered)
     Button logInButton;
 
+    @BindView(R.id.gender_toggle)
+    Spinner genderSpinner;
+
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+
     private String email;
     private String password;
     private String name;
     private String city;
-    private int gender;
+    private String gender;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDrivesDatabaseReference;
+    ArrayList<String> genderArray;
+    String userGender;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         ButterKnife.bind(this);
         mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        genderArray = new ArrayList<>();
+        genderArray.add("Female");
+        genderArray.add("Male");
+        genderArray.add("Others");
+        setupSpinner();
     }
 
     @Override
@@ -77,6 +96,13 @@ public class SignUpActivity extends AppCompatActivity {
         password = accountPasswordEditText.getText().toString().trim();
         name = userNameEditText.getText().toString().trim();
         city = userCityEditText.getText().toString().trim();
+
+        gender = userGender;
+        userEmailEditText.setText("");
+        accountPasswordEditText.setText("");
+        userNameEditText.setText("");
+        userCityEditText.setText("");
+
         if (TextUtils.isEmpty(name)) {
             userNameEditText.setError(getResources().getString(R.string.error_enter_your_name));
             return;
@@ -101,35 +127,24 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                if (user != null) {
-                                    // User is signed in
-                                    // NOTE: this Activity should get onpen only when the user is not signed in, otherwise
-                                    // the user will receive another verification email.
+                                // User is signed in
+                                // NOTE: this Activity should get open only when the user is not signed in, otherwise
+                                // the user will receive another verification email.
+                                mDrivesDatabaseReference = mFirebaseDatabase.getReference().child(getResources()
+                                        .getString(R.string.firebase_database_child_drives));
+                                UserProfile userProfile = new UserProfile(name, city, gender, email);
+                                mFirebaseDatabase.getReference().child("userProfile").child(user.getUid()).push().setValue(userProfile);
 
-                                    mFirebaseDatabase = FirebaseDatabase.getInstance();
-                                    mDrivesDatabaseReference = mFirebaseDatabase.getReference().child(getResources()
-                                            .getString(R.string.firebase_database_child_drives));
-
-//                                    mUserProfile = new UserProfile("", "", email);
-//                                    FirebaseDatabase.getInstance().getReference().child("userProfile").child(FirebaseAuth
-//                                            .getInstance().getCurrentUser().getUid()).push().setValue(mUserProfile);
-
-                                    mAuth.signOut();
-                                    sendVerificationEmail();
-                                } else {
-                                    // User is signed out
-
-                                }
+                                sendEmailVerification(user);
+                                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                                finish();
 
                             } else {
                                 // If sign up fails, display a message to the user.
-
                                 Toast.makeText(SignUpActivity.this, getResources()
                                                 .getString(R.string.toast_problem_creating_account),
                                         Toast.LENGTH_SHORT).show();
-
                             }
                         }
                     });
@@ -137,6 +152,48 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(SignUpActivity.this, getResources()
                     .getString(R.string.check_internet_connectivity), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @OnClick(R.id.button_already_registered)
+    public void alreadyRegisteredTransferToLoginActivity() {
+        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+        finish();
+    }
+
+    private void sendEmailVerification(FirebaseUser user) {
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // email sent
+                            // after email is sent just logout the user and finish this activity
+                            mAuth.signOut();
+
+                        } else {
+                        }
+                    }
+                });
+    }
+
+    private void setupSpinner() {
+        //codes below referenced from: https://www.mkyong.com/android/android-spinner-drop-down-list-example/
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, genderArray);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSpinner.setAdapter(dataAdapter);
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                userGender = adapterView.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                userGender = genderArray.get(0);
+            }
+        });
     }
 
     @OnClick(R.id.button_already_registered)
@@ -155,18 +212,10 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // email sent
                             // after email is sent just logout the user and finish this activity
-                            FirebaseAuth.getInstance().signOut();
+                            mAuth.signOut();
                             startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                             finish();
                         } else {
-                            // email not sent, so display message and restart the activity or do whatever you wish to do
-
-                            //restart this activity
-                            overridePendingTransition(0, 0);
-                            finish();
-                            overridePendingTransition(0, 0);
-                            startActivity(getIntent());
-
                         }
                     }
                 });
