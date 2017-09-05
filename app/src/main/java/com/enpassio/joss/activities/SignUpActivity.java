@@ -51,9 +51,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     @BindView(R.id.gender_toggle)
     Spinner genderSpinner;
-
+    ArrayList<String> genderArray;
+    String userGender;
     private FirebaseAuth mAuth;
-
     private String email;
     private String password;
     private String name;
@@ -61,8 +61,6 @@ public class SignUpActivity extends AppCompatActivity {
     private String gender;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDrivesDatabaseReference;
-    ArrayList<String> genderArray;
-    String userGender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,12 +95,6 @@ public class SignUpActivity extends AppCompatActivity {
         name = userNameEditText.getText().toString().trim();
         city = userCityEditText.getText().toString().trim();
 
-        gender = userGender;
-        userEmailEditText.setText("");
-        accountPasswordEditText.setText("");
-        userNameEditText.setText("");
-        userCityEditText.setText("");
-
         if (TextUtils.isEmpty(name)) {
             userNameEditText.setError(getResources().getString(R.string.error_enter_your_name));
             return;
@@ -126,6 +118,13 @@ public class SignUpActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+
+                                gender = userGender;
+                                userEmailEditText.setText("");
+                                accountPasswordEditText.setText("");
+                                userNameEditText.setText("");
+                                userCityEditText.setText("");
+
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 // User is signed in
@@ -153,13 +152,13 @@ public class SignUpActivity extends AppCompatActivity {
                     .getString(R.string.check_internet_connectivity), Toast.LENGTH_SHORT).show();
         }
     }
-
     @OnClick(R.id.button_already_registered)
     public void alreadyRegisteredTransferToLoginActivity() {
         startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
         finish();
     }
 
+    /* code below referenced from: https://stackoverflow.com/a/41780828/5770629 */
     private void sendEmailVerification(FirebaseUser user) {
         user.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -200,24 +199,5 @@ public class SignUpActivity extends AppCompatActivity {
     public void alreadyRegisteredSignIn() {
         startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
         finish();
-    }
-
-    /* code below referenced from: https://stackoverflow.com/a/41780828/5770629 */
-    private void sendVerificationEmail() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        user.sendEmailVerification()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            // email sent
-                            // after email is sent just logout the user and finish this activity
-                            mAuth.signOut();
-                            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-                            finish();
-                        } else {
-                        }
-                    }
-                });
     }
 }

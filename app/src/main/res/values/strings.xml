@@ -24,4 +24,5 @@
     <string name="error_enter_your_name">Enter your name</string>
     <string name="error_enter_your_city">Enter your city</string>
     <string name="firebase_database_child_drives">drives</string>
+    <string name="toast_authentication_failed">Authentication failed. Please check your email or passowrd</string>
 </resources>
